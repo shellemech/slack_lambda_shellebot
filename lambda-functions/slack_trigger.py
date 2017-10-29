@@ -9,7 +9,7 @@ from collections import defaultdict
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 SLACK_URL = "https://slack.com/api/chat.postMessage"
-accounts = ['098798438173']
+accounts = [os.environ["ACCOUNT_ID"]]
 
 def run_ec2(region, accountid, searchword):
     """Use boto3 to return a list of aws instances.
@@ -113,9 +113,9 @@ def handler(data, context):
                 if term in sentence:
                     searchword = term
             for accountid in accounts:
-                 instances = "_Here's a list of " + searchword + " instances in us-west-1 (" + accountid + ")_ \n"
+                 instances = "_Here's a list of " + searchword + " instances in us-west-1_ \n"
                  instances += run_ec2 ("us-west-1", accountid, searchword)
-                 instances += "_Here's a list of " + searchword + " instances in us-west-2 (" + accountid + ")_ \n"
+                 instances += "_Here's a list of " + searchword + " instances in us-west-2_ \n"
                  instances += run_ec2 ("us-west-2", accountid, searchword)
             return_message(instances, channel_id)
         else:
